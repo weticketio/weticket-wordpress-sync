@@ -24,7 +24,10 @@ class Client {
 	 * @return string|WP_Error Raw XML body, or WP_Error on failure.
 	 */
 	public function fetch( $url ) {
-		if ( empty( $url ) || ! wp_http_validate_url( $url ) ) {
+		if ( empty( $url ) ) {
+			return new WP_Error( 'weticket_feed_url', __( 'No feed URL is configured.', 'weticket-sync' ) );
+		}
+		if ( ! wp_http_validate_url( $url ) ) {
 			return new WP_Error( 'weticket_feed_url', __( 'The configured feed URL is invalid.', 'weticket-sync' ) );
 		}
 

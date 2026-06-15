@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="WeTicket Sync for WordPress" width="340" />
+</p>
+
 # WeTicket WordPress Sync
 
 ![CI](https://github.com/weticketio/weticket-wordpress-sync/actions/workflows/ci.yml/badge.svg)
@@ -103,6 +107,10 @@ git push origin v1.0.0
 The release workflow installs production dependencies only (Twig, no dev tools), packages the `weticket-wordpress-sync/` plugin folder with `vendor/` bundled, and attaches `weticket-wordpress-sync-v1.0.0.zip` to the release — ready to upload to WordPress.
 
 ## Changelog
+
+### 1.0.1
+
+- The feed URL no longer defaults to a staging URL; it must be configured per site. Syncing is skipped (and logged) until it is set.
 
 ### 1.0.0
 

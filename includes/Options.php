@@ -20,7 +20,7 @@ class Options {
 	 */
 	public static function defaults() {
 		return array(
-			'feed_url'         => 'https://api.staging.weticket.io/storefront/organizations/f2142682-5cb6-4a93-b52c-04b7a5aa6780/events.xml',
+			'feed_url'         => '', // Must be configured per site under Settings → WeTicket Sync.
 			'interval'         => 'hourly',
 			'on_removal'       => 'draft', // draft | trash | keep.
 			'title_template'   => self::default_title_template(),

@@ -120,10 +120,12 @@ class Settings {
 		switch ( $key ) {
 			case 'feed_url':
 				printf(
-					'<input type="url" class="large-text code" name="%s" value="%s" />',
+					'<input type="url" class="large-text code" name="%s" value="%s" placeholder="%s" />',
 					esc_attr( $name ),
-					esc_attr( $value )
+					esc_attr( $value ),
+					esc_attr( 'https://api.weticket.io/storefront/organizations/<organization-id>/events.xml' )
 				);
+				echo '<p class="description">' . esc_html__( "Paste your organization's WeTicket events feed URL. Syncing is skipped until this is set.", 'weticket-sync' ) . '</p>';
 				break;
 
 			case 'interval':

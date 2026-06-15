@@ -35,6 +35,7 @@ jobs:
             --exclude='.git' \
             --exclude='.github' \
             --exclude='.gitignore' \
+            --exclude='assets' \
             --exclude='build' \
             --exclude='tests' \
             --exclude='phpunit.xml.dist' \

@@ -3,7 +3,7 @@
  * Plugin Name:       WeTicket WordPress Sync
  * Plugin URI:        https://weticket.io/
  * Description:       Periodically syncs events from a WeTicket Storefront RSS feed into a custom post type. Renders titles and content with Twig templates.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            WeTicket
@@ -18,7 +18,7 @@ namespace WeTicket\Sync;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WETICKET_SYNC_VERSION', '1.0.0' );
+define( 'WETICKET_SYNC_VERSION', '1.0.1' );
 define( 'WETICKET_SYNC_FILE', __FILE__ );
 define( 'WETICKET_SYNC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WETICKET_SYNC_URL', plugin_dir_url( __FILE__ ) );

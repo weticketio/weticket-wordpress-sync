@@ -1,0 +1,17 @@
+{% if media.mainImageUrl %}<figure class="weticket-event-image"><img src="{{ media.mainImageUrl }}" alt="{{ title }}" /></figure>{% endif %}
+
+{% if textHtml %}{{ textHtml|raw }}{% elseif description %}<p>{{ description|nl2br }}</p>{% endif %}
+
+{% if start %}<p><strong>Wanneer:</strong> {{ start|date('j F Y H:i') }}{% if end %} &ndash; {{ end|date('j F Y H:i') }}{% endif %}</p>{% endif %}
+
+{% if venue.title %}<p><strong>Waar:</strong> {{ venue.title }}</p>{% endif %}
+
+{% if media.additionalImageUrls %}
+<div class="weticket-event-gallery">
+	{% for image in media.additionalImageUrls %}
+		<img src="{{ image }}" alt="{{ title }}" />
+	{% endfor %}
+</div>
+{% endif %}
+
+{% if tickets_url %}<p><a class="button" href="{{ tickets_url }}">Tickets</a></p>{% endif %}

@@ -1,0 +1,10 @@
+# Dependencies (restore with `composer install`; the dist zip bundles them)
+/vendor/
+/node_modules/
+
+# Build artifacts
+/*.zip
+
+# Local / OS
+.DS_Store
+.phpunit.result.cache

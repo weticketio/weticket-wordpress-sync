@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-16"?>
+<rss version="2.0" xmlns:ev="http://purl.org/rss/1.0/modules/event/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kantoor Terminal Test - Upcoming events</title>
+    <link>https://terminal-test.staging.weticket.io/</link>
+    <description>Upcoming events for Kantoor Terminal Test</description>
+    <atom:link href="http://api.staging.weticket.io/storefront/organizations/f2142682-5cb6-4a93-b52c-04b7a5aa6780/events.xml" rel="self" type="application/rss+xml" />
+    <image>
+      <url>https://weticket-staging.ams3.digitaloceanspaces.com/theme/logo.png</url>
+      <title>Kantoor Terminal Test - Upcoming events</title>
+      <link>https://terminal-test.staging.weticket.io/</link>
+    </image>
+    <item>
+      <title>Kantoor POS</title>
+      <link>https://terminal-test.staging.weticket.io/kantoor-pos</link>
+      <guid isPermaLink="false">b5c21daf-28cb-4ba5-8509-0ea5aad0295c</guid>
+      <pubDate>Wed, 02 Dec 2026 11:00:00 GMT</pubDate>
+      <ev:startdate>2026-12-02T11:00:00.0000000Z</ev:startdate>
+      <ev:enddate>2026-12-03T11:13:00.0000000Z</ev:enddate>
+      <ev:organizer>Kantoor Terminal Test</ev:organizer>
+      <description>Hallo wereld
+Regel twee</description>
+      <content:encoded><![CDATA[<p>Hallo <b>wereld</b></p><ol><li>Feest</li></ol>]]></content:encoded>
+      <ev:location>WeTicket HQ</ev:location>
+      <media:content url="https://cdn.example.com/cover.jpg" medium="image" type="image/jpeg" />
+      <media:content url="https://cdn.example.com/extra.png" type="image/png" />
+    </item>
+    <item>
+      <title>Kantoor POS duplicate 2k27</title>
+      <link>https://terminal-test.staging.weticket.io/kantoor-pos-duplicate-2k27</link>
+      <guid isPermaLink="false">007ae539-87fa-47ac-9ee1-9d833cb96904</guid>
+      <pubDate>Thu, 31 Dec 2026 11:00:00 GMT</pubDate>
+      <ev:startdate>2026-12-31T11:00:00.0000000Z</ev:startdate>
+      <ev:enddate>2027-01-01T13:00:00.0000000Z</ev:enddate>
+      <ev:organizer>Kantoor Terminal Test</ev:organizer>
+      <description>When: Thu, 31 Dec 2026 11:00:00 GMT — Where: Jantjes Verjaardag Amsterdam</description>
+      <ev:location>Jantjes Verjaardag Amsterdam</ev:location>
+      <media:thumbnail url="https://cdn.example.com/thumb.jpg" />
+      <enclosure url="https://cdn.example.com/enc.jpg" type="image/jpeg" length="12345" />
+    </item>
+  </channel>
+</rss>

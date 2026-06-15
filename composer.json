@@ -1,0 +1,26 @@
+{
+    "name": "weticket/wordpress-sync",
+    "description": "Sync WeTicket events into a WordPress custom post type, rendered with Twig templates.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4",
+        "twig/twig": "^3.0",
+        "symfony/polyfill-mbstring": "^1.20"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        },
+        "platform-check": false,
+        "optimize-autoloader": true
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WeTicket\\Sync\\Tests\\": "tests/"
+        }
+    }
+}

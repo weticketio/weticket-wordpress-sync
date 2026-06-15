@@ -1,5 +1,7 @@
 # WeTicket WordPress Sync
 
+![CI](https://github.com/weticketio/weticket-wordpress-sync/actions/workflows/ci.yml/badge.svg)
+
 Periodically syncs events from a WeTicket Storefront RSS feed into a custom post type, rendered with Twig templates.
 
 | | |
@@ -77,6 +79,28 @@ Each event's WeTicket UUID (the RSS `guid`) is stored in the `_weticket_guid` po
 ### What happens to events that disappear from the feed?
 
 Configurable: set them to draft (default), move them to trash, or leave them published.
+
+## Development
+
+Install dependencies and run the test suite:
+
+```bash
+composer install
+vendor/bin/phpunit
+```
+
+Continuous integration (GitHub Actions) runs the test suite on PHP 7.4, 8.1, and 8.3 for every push to `main` and every pull request.
+
+### Releasing
+
+Tag a version to build and publish the installable zip as a GitHub Release asset:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The release workflow installs production dependencies only (Twig, no dev tools), packages the `weticket-wordpress-sync/` plugin folder with `vendor/` bundled, and attaches `weticket-wordpress-sync-v1.0.0.zip` to the release — ready to upload to WordPress.
 
 ## Changelog
 

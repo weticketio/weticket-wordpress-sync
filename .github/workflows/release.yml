@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build & publish plugin zip
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: mbstring, dom, simplexml, libxml, ctype
+          coverage: none
+          tools: composer:v2
+
+      - name: Install production dependencies
+        run: composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Build plugin zip
+        run: |
+          SLUG=weticket-wordpress-sync
+          VERSION="${GITHUB_REF_NAME}"
+          mkdir -p "build/$SLUG"
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='build' \
+            --exclude='tests' \
+            --exclude='phpunit.xml.dist' \
+            --exclude='node_modules' \
+            --exclude='*.zip' \
+            ./ "build/$SLUG/"
+          (cd build && zip -rq "../${SLUG}-${VERSION}.zip" "$SLUG" -x '*.DS_Store')
+          echo "ASSET=${SLUG}-${VERSION}.zip" >> "$GITHUB_ENV"
+
+      - name: Publish release with zip
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "$ASSET" --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" "$ASSET" --title "$GITHUB_REF_NAME" --generate-notes
+          fi

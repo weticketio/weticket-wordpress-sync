@@ -22,47 +22,52 @@ class Fields {
 	 */
 	public static function definitions() {
 		return array(
-			'weticket_start'       => array(
+			'weticket_start'             => array(
 				'label'    => __( 'Start date/time', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'sanitize_text_field',
 			),
-			'weticket_end'         => array(
+			'weticket_end'               => array(
 				'label'    => __( 'End date/time', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'sanitize_text_field',
 			),
-			'weticket_tickets_url' => array(
+			'weticket_tickets_url'       => array(
 				'label'    => __( 'Tickets URL', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'esc_url_raw',
 			),
-			'weticket_venue'       => array(
+			'weticket_venue'             => array(
 				'label'    => __( 'Venue', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'sanitize_text_field',
 			),
-			'weticket_organizer'   => array(
+			'weticket_organizer'         => array(
 				'label'    => __( 'Organizer', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'sanitize_text_field',
 			),
-			'weticket_description' => array(
+			'weticket_short_description' => array(
+				'label'    => __( 'Short description', 'weticket-sync' ),
+				'type'     => 'string',
+				'sanitize' => 'sanitize_textarea_field',
+			),
+			'weticket_description'       => array(
 				'label'    => __( 'Description (plain text)', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'sanitize_textarea_field',
 			),
-			'weticket_text_html'   => array(
+			'weticket_text_html'         => array(
 				'label'    => __( 'Description (HTML)', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'wp_kses_post',
 			),
-			'weticket_status'      => array(
+			'weticket_status'            => array(
 				'label'    => __( 'Status', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'sanitize_text_field',
 			),
-			'weticket_pubdate'     => array(
+			'weticket_pubdate'           => array(
 				'label'    => __( 'Publication date', 'weticket-sync' ),
 				'type'     => 'string',
 				'sanitize' => 'sanitize_text_field',

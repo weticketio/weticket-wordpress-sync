@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-16"?>
-<rss version="2.0" xmlns:ev="http://purl.org/rss/1.0/modules/event/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:ev="http://purl.org/rss/1.0/modules/event/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:weticket="https://weticket.com/rss">
   <channel>
     <title>Kantoor Terminal Test - Upcoming events</title>
     <link>https://terminal-test.staging.weticket.io/</link>
@@ -20,6 +20,7 @@
       <ev:organizer>Kantoor Terminal Test</ev:organizer>
       <description>Hallo wereld
 Regel twee</description>
+      <weticket:short_description>Feest, DJs en bier op kantoor.</weticket:short_description>
       <content:encoded><![CDATA[<p>Hallo <b>wereld</b></p><ol><li>Feest</li></ol>]]></content:encoded>
       <ev:location>WeTicket HQ</ev:location>
       <media:content url="https://cdn.example.com/cover.jpg" medium="image" type="image/jpeg" />

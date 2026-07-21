@@ -13,16 +13,17 @@ defined( 'ABSPATH' ) || exit;
 
 class Parser {
 
-	const NS_EV      = 'http://purl.org/rss/1.0/modules/event/';
-	const NS_MEDIA   = 'http://search.yahoo.com/mrss/';
-	const NS_CONTENT = 'http://purl.org/rss/1.0/modules/content/';
+	const NS_EV       = 'http://purl.org/rss/1.0/modules/event/';
+	const NS_MEDIA    = 'http://search.yahoo.com/mrss/';
+	const NS_CONTENT  = 'http://purl.org/rss/1.0/modules/content/';
+	const NS_WETICKET = 'https://weticket.com/rss';
 
 	/**
 	 * Parse a raw XML string into a list of normalized event arrays.
 	 *
 	 * Each event is an associative array with normalized keys:
-	 * guid, title, link, description, start, end, organizer, location,
-	 * image_url, pubdate.
+	 * guid, title, link, description, short_description, start, end,
+	 * organizer, location, image_url, pubdate.
 	 *
 	 * @param string $xml_string Raw (encoding-normalized) feed body.
 	 * @return array<int,array>|WP_Error
@@ -41,9 +42,10 @@ class Parser {
 		$events = array();
 
 		foreach ( $xml->channel->item as $item ) {
-			$ev      = $item->children( self::NS_EV );
-			$media   = $item->children( self::NS_MEDIA );
-			$content = $item->children( self::NS_CONTENT );
+			$ev       = $item->children( self::NS_EV );
+			$media    = $item->children( self::NS_MEDIA );
+			$content  = $item->children( self::NS_CONTENT );
+			$weticket = $item->children( self::NS_WETICKET );
 
 			$guid = trim( (string) $item->guid );
 			if ( '' === $guid ) {
@@ -57,18 +59,19 @@ class Parser {
 			$images = $this->extract_images( $item, $media );
 
 			$events[] = array(
-				'guid'        => $guid,
-				'title'       => trim( (string) $item->title ),
-				'link'        => trim( (string) $item->link ),
-				'description' => trim( (string) $item->description ),
-				'text_html'   => isset( $content->encoded ) ? trim( (string) $content->encoded ) : '',
-				'pubdate'     => trim( (string) $item->pubDate ),
-				'start'       => isset( $ev->startdate ) ? trim( (string) $ev->startdate ) : '',
-				'end'         => isset( $ev->enddate ) ? trim( (string) $ev->enddate ) : '',
-				'organizer'   => isset( $ev->organizer ) ? trim( (string) $ev->organizer ) : '',
-				'location'    => isset( $ev->location ) ? trim( (string) $ev->location ) : '',
-				'image_url'   => $images ? $images[0] : '',
-				'image_urls'  => $images,
+				'guid'              => $guid,
+				'title'             => trim( (string) $item->title ),
+				'link'              => trim( (string) $item->link ),
+				'description'       => trim( (string) $item->description ),
+				'short_description' => isset( $weticket->short_description ) ? trim( (string) $weticket->short_description ) : '',
+				'text_html'         => isset( $content->encoded ) ? trim( (string) $content->encoded ) : '',
+				'pubdate'           => trim( (string) $item->pubDate ),
+				'start'             => isset( $ev->startdate ) ? trim( (string) $ev->startdate ) : '',
+				'end'               => isset( $ev->enddate ) ? trim( (string) $ev->enddate ) : '',
+				'organizer'         => isset( $ev->organizer ) ? trim( (string) $ev->organizer ) : '',
+				'location'          => isset( $ev->location ) ? trim( (string) $ev->location ) : '',
+				'image_url'         => $images ? $images[0] : '',
+				'image_urls'        => $images,
 			);
 		}
 

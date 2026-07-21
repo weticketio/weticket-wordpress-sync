@@ -13,7 +13,7 @@ Periodically syncs events from a WeTicket Storefront RSS feed into a custom post
 | **Requires WordPress** | 5.8+ |
 | **Tested up to** | 6.5 |
 | **Requires PHP** | 7.4+ |
-| **Stable tag** | 1.0.0 |
+| **Stable tag** | 1.1.0 |
 | **License** | [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html) |
 | **Tags** | events, ticketing, weticket, sync, twig |
 
@@ -29,6 +29,7 @@ The WeTicket Storefront RSS feed exposes a focused set of fields. These map to t
 
 - `title` — event title
 - `description` / `text` — plain-text event description
+- `shortDescription` — short plain-text description (`weticket:short_description`, also stored as the post excerpt)
 - `textHtml` — HTML event description (used as the post content by default)
 - `start` — start date/time (`ev:startdate`)
 - `end` — end date/time (`ev:enddate`)
@@ -50,6 +51,7 @@ In addition to rendering the title and content, each event stores its data as **
 - `weticket_tickets_url`
 - `weticket_venue`
 - `weticket_organizer`
+- `weticket_short_description` (short plain text)
 - `weticket_description` (plain text)
 - `weticket_text_html` (HTML)
 - `weticket_status`
@@ -107,6 +109,10 @@ git push origin v1.0.0
 The release workflow installs production dependencies only (Twig, no dev tools), packages the `weticket-wordpress-sync/` plugin folder with `vendor/` bundled, and attaches `weticket-wordpress-sync-v1.0.0.zip` to the release — ready to upload to WordPress.
 
 ## Changelog
+
+### 1.1.0
+
+- Sync the short description (`weticket:short_description`) from the feed: available as the `shortDescription` Twig variable, stored in the `weticket_short_description` custom field, and set as the post excerpt.
 
 ### 1.0.1
 

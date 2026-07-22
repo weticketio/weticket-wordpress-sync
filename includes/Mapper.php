@@ -27,6 +27,7 @@ class Mapper {
 		$data = array(
 			'title'            => $event['title'],
 			'description'      => $event['description'],
+			'shortDescription' => $event['short_description'],
 			'text'             => $event['description'],
 			'textHtml'         => $event['text_html'],
 			'start'            => $event['start'],
@@ -67,15 +68,16 @@ class Mapper {
 	 */
 	public function to_meta( array $event ) {
 		return array(
-			'weticket_start'       => $event['start'],
-			'weticket_end'         => $event['end'],
-			'weticket_tickets_url' => $event['link'],
-			'weticket_venue'       => $event['location'],
-			'weticket_organizer'   => $event['organizer'],
-			'weticket_description' => $event['description'],
-			'weticket_text_html'   => $event['text_html'],
-			'weticket_status'      => 'onsale',
-			'weticket_pubdate'     => $event['pubdate'],
+			'weticket_start'             => $event['start'],
+			'weticket_end'               => $event['end'],
+			'weticket_tickets_url'       => $event['link'],
+			'weticket_venue'             => $event['location'],
+			'weticket_organizer'         => $event['organizer'],
+			'weticket_short_description' => $event['short_description'],
+			'weticket_description'       => $event['description'],
+			'weticket_text_html'         => $event['text_html'],
+			'weticket_status'            => 'onsale',
+			'weticket_pubdate'           => $event['pubdate'],
 		);
 	}
 }

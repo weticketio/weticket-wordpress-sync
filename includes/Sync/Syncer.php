@@ -101,6 +101,7 @@ class Syncer {
 			'post_type'    => PostType::SLUG,
 			'post_title'   => wp_strip_all_tags( $title ),
 			'post_content' => $content,
+			'post_excerpt' => $event['short_description'],
 			'post_status'  => 'publish',
 		);
 

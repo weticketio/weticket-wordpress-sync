@@ -77,6 +77,18 @@ class ParserTest extends TestCase {
 		$this->assertSame( '', $events[1]['text_html'] );
 	}
 
+	public function test_parses_short_description() {
+		$events = $this->parse_fixture();
+		$mapper = new Mapper();
+
+		$this->assertSame( 'Feest, DJs en bier op kantoor.', $events[0]['short_description'] );
+		$this->assertSame( 'Feest, DJs en bier op kantoor.', $mapper->to_template_data( $events[0] )['shortDescription'] );
+		$this->assertSame( 'Feest, DJs en bier op kantoor.', $mapper->to_meta( $events[0] )['weticket_short_description'] );
+
+		// Item without weticket:short_description falls back to empty.
+		$this->assertSame( '', $events[1]['short_description'] );
+	}
+
 	public function test_mapper_exposes_text_and_texthtml() {
 		$events = $this->parse_fixture();
 		$data   = ( new Mapper() )->to_template_data( $events[0] );

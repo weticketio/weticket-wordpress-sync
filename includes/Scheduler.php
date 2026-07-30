@@ -15,6 +15,8 @@ class Scheduler {
 
 	const HOOK = 'weticket_sync_cron';
 
+	const LOCK = 'weticket_schedule_lock';
+
 	/**
 	 * Register hooks.
 	 */
@@ -24,6 +26,10 @@ class Scheduler {
 		add_action( 'admin_post_weticket_sync_now', array( $this, 'handle_sync_now' ) );
 		// Reschedule when the configured interval changes.
 		add_action( 'update_option_' . Options::OPTION, array( $this, 'on_options_updated' ), 10, 2 );
+		// Self-heal: the event is created on activation, but a cleared cron
+		// queue (migration, restore, cleanup plugin) would otherwise leave
+		// the sync unscheduled until someone reactivates the plugin.
+		add_action( 'init', array( $this, 'ensure_scheduled' ) );
 	}
 
 	/**
@@ -60,6 +66,13 @@ class Scheduler {
 	 * Schedule the recurring sync if not already scheduled.
 	 */
 	public function schedule() {
+		// Ensure the custom interval exists even outside a normal bootstrap:
+		// the activation hook fires after plugins_loaded, so register() — and
+		// with it the cron_schedules filter — has not run in that request.
+		// Without this, activating with the 15-minute interval selected made
+		// wp_schedule_event() fail silently on an unknown schedule.
+		add_filter( 'cron_schedules', array( $this, 'add_schedules' ) );
+
 		$recurrence = Options::get_value( 'interval' );
 		if ( ! array_key_exists( $recurrence, self::recurrence_choices() ) ) {
 			$recurrence = 'hourly';
@@ -67,6 +80,72 @@ class Scheduler {
 		if ( ! wp_next_scheduled( self::HOOK ) ) {
 			wp_schedule_event( time() + MINUTE_IN_SECONDS, $recurrence, self::HOOK );
 		}
+	}
+
+	/**
+	 * Self-heal: re-create the recurring event if it is missing, guarded
+	 * against concurrent requests double-scheduling it.
+	 *
+	 * wp_schedule_event() does not deduplicate recurring events, so two
+	 * requests racing through the wp_next_scheduled() check could each add
+	 * an event under a slightly different timestamp, leaving overlapping
+	 * syncs behind. Only the request that wins the lock schedules.
+	 */
+	public function ensure_scheduled() {
+		if ( wp_next_scheduled( self::HOOK ) ) {
+			return;
+		}
+
+		if ( ! $this->acquire_lock() ) {
+			return;
+		}
+
+		// Another request may have scheduled between the check above and
+		// acquiring the lock, and this process's in-memory options cache
+		// would not see that write; refresh before re-checking.
+		wp_cache_delete( 'alloptions', 'options' );
+		if ( ! wp_next_scheduled( self::HOOK ) ) {
+			$this->schedule();
+		}
+
+		delete_option( self::LOCK );
+	}
+
+	/**
+	 * Atomically acquire the scheduling lock.
+	 *
+	 * Same technique as WP_Upgrader::create_lock(): INSERT IGNORE against
+	 * the unique option_name key succeeds for exactly one request.
+	 *
+	 * @return bool Whether the lock was acquired.
+	 */
+	private function acquire_lock() {
+		global $wpdb;
+
+		$acquired = $wpdb->query(
+			$wpdb->prepare(
+				"INSERT IGNORE INTO `$wpdb->options` ( `option_name`, `option_value`, `autoload` ) VALUES (%s, %s, 'no') /* LOCK */",
+				self::LOCK,
+				(string) time()
+			)
+		);
+
+		if ( $acquired ) {
+			return true;
+		}
+
+		// The lock exists. Treat it as stale after a minute (the holder may
+		// have died before releasing) so self-healing cannot jam. Read via
+		// $wpdb: the row was inserted around the options cache.
+		$held_since = (int) $wpdb->get_var(
+			$wpdb->prepare( "SELECT option_value FROM `$wpdb->options` WHERE option_name = %s", self::LOCK )
+		);
+		if ( $held_since && time() - $held_since > MINUTE_IN_SECONDS ) {
+			delete_option( self::LOCK );
+			return $this->acquire_lock();
+		}
+
+		return false;
 	}
 
 	/**

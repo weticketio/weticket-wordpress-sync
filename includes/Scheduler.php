@@ -24,6 +24,10 @@ class Scheduler {
 		add_action( 'admin_post_weticket_sync_now', array( $this, 'handle_sync_now' ) );
 		// Reschedule when the configured interval changes.
 		add_action( 'update_option_' . Options::OPTION, array( $this, 'on_options_updated' ), 10, 2 );
+		// Self-heal: the event is created on activation, but a cleared cron
+		// queue (migration, restore, cleanup plugin) would otherwise leave
+		// the sync unscheduled until someone reactivates the plugin.
+		add_action( 'init', array( $this, 'schedule' ) );
 	}
 
 	/**
@@ -60,6 +64,13 @@ class Scheduler {
 	 * Schedule the recurring sync if not already scheduled.
 	 */
 	public function schedule() {
+		// Ensure the custom interval exists even outside a normal bootstrap:
+		// the activation hook fires after plugins_loaded, so register() — and
+		// with it the cron_schedules filter — has not run in that request.
+		// Without this, activating with the 15-minute interval selected made
+		// wp_schedule_event() fail silently on an unknown schedule.
+		add_filter( 'cron_schedules', array( $this, 'add_schedules' ) );
+
 		$recurrence = Options::get_value( 'interval' );
 		if ( ! array_key_exists( $recurrence, self::recurrence_choices() ) ) {
 			$recurrence = 'hourly';

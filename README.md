@@ -113,7 +113,7 @@ The release workflow installs production dependencies only (Twig, no dev tools),
 ### 1.1.1
 
 - Fix: the short description was never picked up from live feeds. The feed emits camelCase `<weticket:shortDescription>` while the parser only looked for snake_case `<weticket:short_description>`; both spellings are now accepted.
-- Self-heal the sync schedule: if the recurring `weticket_sync_cron` event is missing from the cron queue (cleared by a migration, restore, or cleanup plugin), it is re-created on the next page load instead of requiring plugin reactivation.
+- Self-heal the sync schedule: if the recurring `weticket_sync_cron` event is missing from the cron queue (cleared by a migration, restore, or cleanup plugin), it is re-created on the next page load instead of requiring plugin reactivation. Re-creation is guarded by an atomic lock (`INSERT IGNORE` on the options table) so concurrent requests cannot schedule duplicate events.
 - Fix activation with the 15-minute interval selected: the activation hook runs after `plugins_loaded`, so the custom `weticket_15min` schedule was not registered yet and `wp_schedule_event()` failed silently, leaving no sync scheduled. `schedule()` now registers the interval itself.
 
 ### 1.1.0

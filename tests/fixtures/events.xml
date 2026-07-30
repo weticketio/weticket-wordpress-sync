@@ -20,7 +20,7 @@
       <ev:organizer>Kantoor Terminal Test</ev:organizer>
       <description>Hallo wereld
 Regel twee</description>
-      <weticket:short_description>Feest, DJs en bier op kantoor.</weticket:short_description>
+      <weticket:shortDescription>Feest, DJs en bier op kantoor.</weticket:shortDescription>
       <content:encoded><![CDATA[<p>Hallo <b>wereld</b></p><ol><li>Feest</li></ol>]]></content:encoded>
       <ev:location>WeTicket HQ</ev:location>
       <media:content url="https://cdn.example.com/cover.jpg" medium="image" type="image/jpeg" />

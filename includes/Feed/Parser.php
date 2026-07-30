@@ -58,12 +58,21 @@ class Parser {
 
 			$images = $this->extract_images( $item, $media );
 
+			// The live feed emits camelCase <weticket:shortDescription>; the
+			// snake_case spelling is kept as a fallback for older feeds.
+			$short_description = '';
+			if ( isset( $weticket->shortDescription ) ) {
+				$short_description = trim( (string) $weticket->shortDescription );
+			} elseif ( isset( $weticket->short_description ) ) {
+				$short_description = trim( (string) $weticket->short_description );
+			}
+
 			$events[] = array(
 				'guid'              => $guid,
 				'title'             => trim( (string) $item->title ),
 				'link'              => trim( (string) $item->link ),
 				'description'       => trim( (string) $item->description ),
-				'short_description' => isset( $weticket->short_description ) ? trim( (string) $weticket->short_description ) : '',
+				'short_description' => $short_description,
 				'text_html'         => isset( $content->encoded ) ? trim( (string) $content->encoded ) : '',
 				'pubdate'           => trim( (string) $item->pubDate ),
 				'start'             => isset( $ev->startdate ) ? trim( (string) $ev->startdate ) : '',

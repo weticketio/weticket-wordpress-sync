@@ -85,8 +85,27 @@ class ParserTest extends TestCase {
 		$this->assertSame( 'Feest, DJs en bier op kantoor.', $mapper->to_template_data( $events[0] )['shortDescription'] );
 		$this->assertSame( 'Feest, DJs en bier op kantoor.', $mapper->to_meta( $events[0] )['weticket_short_description'] );
 
-		// Item without weticket:short_description falls back to empty.
+		// Item without weticket:shortDescription falls back to empty.
 		$this->assertSame( '', $events[1]['short_description'] );
+	}
+
+	public function test_parses_legacy_snake_case_short_description() {
+		$xml = <<<XML
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:weticket="https://weticket.com/rss">
+  <channel>
+    <item>
+      <guid>legacy-1</guid>
+      <title>Legacy</title>
+      <weticket:short_description>Oude spelling.</weticket:short_description>
+    </item>
+  </channel>
+</rss>
+XML;
+
+		$events = ( new Parser() )->parse( $xml );
+
+		$this->assertSame( 'Oude spelling.', $events[0]['short_description'] );
 	}
 
 	public function test_mapper_exposes_text_and_texthtml() {

@@ -13,7 +13,7 @@ Periodically syncs events from a WeTicket Storefront RSS feed into a custom post
 | **Requires WordPress** | 5.8+ |
 | **Tested up to** | 6.5 |
 | **Requires PHP** | 7.4+ |
-| **Stable tag** | 1.1.0 |
+| **Stable tag** | 1.1.1 |
 | **License** | [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html) |
 | **Tags** | events, ticketing, weticket, sync, twig |
 
@@ -109,6 +109,10 @@ git push origin v1.0.0
 The release workflow installs production dependencies only (Twig, no dev tools), packages the `weticket-wordpress-sync/` plugin folder with `vendor/` bundled, and attaches `weticket-wordpress-sync-v1.0.0.zip` to the release — ready to upload to WordPress.
 
 ## Changelog
+
+### 1.1.1
+
+- Fix: the short description was never picked up from live feeds. The feed emits camelCase `<weticket:shortDescription>` while the parser only looked for snake_case `<weticket:short_description>`; both spellings are now accepted.
 
 ### 1.1.0
 
